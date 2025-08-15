@@ -1,0 +1,650 @@
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+
+.App-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 25px;
+    color: #050000;
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.logoytitulo {
+    display: flex;
+    align-items: center;
+}
+
+.nombreweb {
+    margin-left: 15px;
+    justify-content: left;
+}
+
+.logoweb {
+    height: 60px;
+    margin-left: 15px;
+    justify-content: left;
+}
+
+.buscador {
+    position: relative;
+    align-items: center;
+    margin-left: 140px;
+}
+
+.search-button {
+    width: 40px;
+    height: 50px;
+    align-items: center;
+    border-color: #8c8686;
+    border-radius: 10px;
+}
+
+input {
+    padding: 10px;
+    height: 30px;
+    border-radius: 10px;
+    width: 300px;
+    background-color: #ece8e8;
+    border: white;
+}
+
+.user-login {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Empuja el user-login al extremo derecho */
+    margin-right: 15px;
+}
+
+.user-logo {
+    height: 40px; /* Ajusta el tamaño del logo según sea necesario */
+    margin-right: 10px; /* Espacio entre el logo y el texto */
+}
+
+/* Estilos login */
+.login-text {
+    font-size: 25px; /* Ajusta el tamaño del texto según sea necesario */
+    margin-right: 10px;
+    font-weight: normal;
+    text-decoration: none;
+    color: #ffffff; /* Texto blanco */
+    background-color: #0077b6; /* Fondo azul */
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.login-text:hover {
+    background-color: #00b4d8; /* Fondo celeste */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+}
+
+/* Para añadir una animación de pulsación cuando se hace clic */
+.login-text:active {
+    transform: scale(0.95); /* Reduce ligeramente el tamaño */
+    transition: transform 0.1s;
+}
+
+.login-button {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 20px;
+    background-color: #4e4ef6;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 15px 60px;
+}
+
+.home-texto,
+.inscripcion-texto,
+.cursos-texto,
+.miscursos-texto {
+    position: relative; /* Posición relativa para el subrayado absoluto */
+    display: inline-block; /* Ajusta el ancho al contenido */
+    text-decoration: none; /* Elimina el subrayado por defecto */
+    color: #050000; /* Color del texto */
+}
+
+.home-texto::after,
+.inscripcion-texto::after,
+.cursos-texto::after,
+.miscursos-texto::after {
+    content: ''; /* Contenido vacío para el pseudo-elemento */
+    position: absolute; /* Posición absoluta respecto al enlace */
+    left: 0; /* Comienza desde la izquierda */
+    bottom: -2px; /* Distancia del subrayado respecto al texto */
+    width: 0; /* Ancho inicial del subrayado */
+    height: 3px; /* Grosor del subrayado */
+    background-color: #046a9f; /* Color del subrayado */
+    transition: width 0.3s ease-in-out, background-color 0.3s; /* Transición del ancho */
+}
+
+.home-texto:hover::after,
+.inscripcion-texto:hover::after,
+.cursos-texto:hover::after,
+.miscursos-texto:hover::after {
+    width: 100%; /* Ancho completo al hacer hover */
+    background-color: #0077b6;
+    height: 3px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    border: 4px solid #050000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    height: 400px;
+    margin: auto;
+}
+
+.caja-nombre-usuario,
+.caja-contraseña {
+    border: 2px solid #050000;
+    background-color: white;
+}
+
+/* Estilos inscripcion */
+.nombre-apellido-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.nombre-container,
+.apellido-container,
+.email-container,
+.nombre-usuario-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.nombre-texto,
+.apellido-texto,
+.email-texto,
+.nombre-usuario-texto {
+    margin-bottom: 10px;
+}
+
+.email-usuario-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.caja-nombre,
+.caja-apellido,
+.caja-email {
+    border: 2px solid #050000;
+    background-color: white;
+}
+
+/* Estilos main content */
+.App-cuerpo {
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: #050000;
+}
+
+.descripcion {
+    text-align: center;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 23px;
+}
+
+.titulo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.Courses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.Course {
+    border: 2px solid #0077b6; /* Borde azul */
+    padding: 20px;
+    border-radius: 10px;
+    width: 320px;
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    transition: transform 0.2s ease-in-out;
+}
+
+.Course-title {
+    font-size: 26px;
+    margin-bottom: 15px;
+    color: #023e8a; /* Azul oscuro */
+    text-decoration: none;
+    border-bottom: 2px solid #00b4d8; /* Subrayado celeste */
+    padding-bottom: 5px;
+    transition: color 0.3s ease-in-out;
+}
+
+.Course-title:hover {
+    color: #00b4d8; /* Cambia a celeste */
+}
+
+.Course-description {
+    margin-bottom: 10px;
+}
+
+.Course-category {
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.Course:hover {
+    transform: scale(1.05);
+}
+.mensaje-error-busqueda {
+    display: inline-block;
+    background-color: white;
+    border: 7px solid red;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.Course-button:hover {
+    background-color: #00b4d8; /* Cambia a celeste */
+}
+
+/* Estilos columna */
+.columna {
+    padding: 30px;
+    width: 200px;
+}
+
+.componente-columna {
+    width: 190px;
+    height: calc(100vh - 100px);
+    background-color: #b9e3ec !important;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 130px;
+    left: 0;
+    border-radius: 0 80px 0 0;
+    margin-top: 30px;
+}
+
+.componente-columna p {
+    margin: 20px 0;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.componente-columna a {
+    text-decoration: none;
+    color: inherit; /* Para que el color del enlace herede el color del texto circundante */
+}
+
+.logout-text {
+    font-size: 25px; /* Ajusta el tamaño del texto según sea necesario */
+    margin-right: 10px;
+    font-weight: normal;
+    text-decoration: none;
+    color: #ffffff; /* Texto blanco */
+    background-color: #0077b6; /* Fondo azul */
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.logout-text:hover {
+    background-color: #00b4d8; /* Fondo celeste */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+}
+
+/* Para añadir una animación de pulsación cuando se hace clic */
+.logout-text:active {
+    transform: scale(0.95); /* Reduce ligeramente el tamaño */
+    transition: transform 0.1s;
+}
+
+
+/* Ajustes generales */
+.App-cuerpo {
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row; /* Cambiado de 'column' a 'row' para alinear lado a lado */
+    align-items: flex-start; /* Alineación de elementos al principio del contenedor */
+    justify-content: flex-start; /* Alineación de elementos al principio del contenedor */
+    font-size: calc(10px + 2vmin);
+    color: #050000;
+    padding-top: 100px; /* Añadir padding para no sobreponer el header */
+}
+
+/* Estilos de la columna */
+.columna {
+    width: 200px;
+}
+
+.componente-columna {
+    width: 200px; /* Asegurar que la barra lateral tenga un ancho fijo */
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 100px; /* Ajustar la posición para alinearse con el header */
+    left: 0;
+    border-radius: 0 80px 0 0;
+    height: calc(100vh - 100px); /* Altura ajustada tomando en cuenta el header */
+}
+
+/* Ajustes del contenido principal */
+.contenido-principal {
+    margin-left: 220px; /* Dejar un espacio para la barra lateral */
+    padding: 20px;
+    width: calc(100% - 220px); /* Ajustar el ancho del contenido principal */
+}
+
+/* Otros estilos */
+.descripcion {
+    text-align: center;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 23px;
+}
+
+.titulo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.Courses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.Course {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+}
+
+.Course-title {
+    display: inline-block; /* o inline-flex */
+    overflow: hidden; /* Ocultar el exceso de texto */
+    padding: 8px 12px; /* Ajustar el padding vertical y horizontal */
+    border-radius: 10px; /* Reducir el radio del borde */
+    transition: background-color 0.3s ease;
+    font-weight: normal;
+}
+
+.Course-title:hover{
+    background-color: #ece2e2;
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-weight: bold;
+}
+
+.curso-categoria{
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.mensaje-error-busqueda {
+    display: inline-block;
+    background-color: white;
+    border: 7px solid red;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.mis-cursos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    border: 4px solid #050000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: calc(100vw - 240px); /* Ancho ajustado para no generar scroll horizontal */
+    max-width: 500px; /* Máximo ancho permitido */
+    max-height: 500px; /* Límite de altura */
+    overflow-y: auto; /* Desplazamiento vertical si el contenido es demasiado grande */
+    position: fixed; /* Posición absoluta para fijar en la pantalla */
+    top: 50%; /* Posiciona el contenedor en el centro verticalmente */
+    left: calc(50% + 120px); /* Centra horizontalmente el contenedor ajustando la posición */
+    transform: translate(-50%, -50%); /* Centra el contenedor */
+    z-index: 900; /* Asegura que esté por debajo del encabezado */
+    margin-top: 50px; /* Margen superior para separar del encabezado */
+}
+
+.cursos-list {
+    width: 100%; /* Asegura que la lista ocupe todo el ancho del contenedor */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos hijos horizontalmente */
+}
+
+.curso-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    width: 90%; /* Ajusta el ancho del curso para que quede algo de margen */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+    text-align: center; /* Centra el texto dentro del curso */
+}
+
+.mis-cursos h2 {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1000; /* Asegura que el título esté por encima del contenido al hacer scroll */
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.admin-panel {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+}
+
+.admin-panel .sidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-panel .main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.admin-panel .section {
+    display: none;
+}
+
+.admin-panel .section.active {
+    display: block;
+}
+
+/* Estilos para los botones de la pantalla modal */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.upload-form input[type="file"] {
+    display: none; /* Oculta el input de archivo real */
+}
+
+.upload-form label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-form label:hover {
+    background-color: #0056b3;
+}
+
+.upload-form button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-form button:hover {
+    background-color: #218838;
+}
+
+/* Estilos para el historial de archivos subidos */
+.uploaded-files {
+    margin-top: 20px;
+    width: 100%;
+    text-align: left;
+}
+
+.uploaded-files h3 {
+    font-size: 20px;
+    color: #0077b6;
+    margin-bottom: 10px;
+}
+
+.uploaded-files ul {
+    list-style: none;
+    padding: 0;
+}
+
+.uploaded-files li {
+    margin: 5px 0;
+}
+
+.uploaded-files a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.uploaded-files a:hover {
+    color: #0056b3;
+}
+
+
+/* Estilos para la sección de archivos subidos */
+.ArchivosSubidos {
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 100px); /* Ajusta la altura */
+    overflow-y: auto; /* Añade desplazamiento vertical */
+}
+
+.ArchivosSubidos h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #0077b6; /* Color del título */
+}
+
+.File {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.File a {
+    text-decoration: none;
+    color: #007BFF;
+    transition: color 0.3s;
+}
+
+.File a:hover {
+    color: #0056b3;
+}
