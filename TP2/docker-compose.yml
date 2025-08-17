@@ -1,40 +1,50 @@
 version: '3.8'
+
 services:
   backend:
-    build:
-      context: ./backend
+    image: weblearn-backend:latest
+    container_name: tp2-backend-1
     ports:
-        - "8080:8080"
+      - "8080:8080"
     environment:
       - DB_HOST=db
       - DB_PORT=3306
       - DB_USER=root
-      - DB_PASSWORD=ladrillo753
-      - DB_NAME=pbbv
+      - DB_PASSWORD=password
+      - DB_NAME=weblearn
+      - GIN_MODE=release
     depends_on:
       - db
     networks:
       - app-network
 
   frontend:
-    build:
-      context: ./frontend
+    image: weblearn-frontend:latest
+    container_name: tp2-frontend-1
     ports:
       - "80:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
     depends_on:
       - backend
     networks:
       - app-network
 
   db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: ladrillo753
-      MYSQL_DATABASE: pbbv
+    image: mysql:8.0
+    container_name: tp2-db-1
     ports:
       - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=weblearn
+    volumes:
+      - mysql_data:/var/lib/mysql
     networks:
       - app-network
+
+volumes:
+  mysql_data:
 
 networks:
   app-network:
