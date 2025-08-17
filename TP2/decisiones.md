@@ -56,6 +56,28 @@ USER appuser
 - **Tags específicos** para reproducibilidad
 - **Latest tag** para desarrollo y testing
 
+**Publicación en Docker Hub:**
+- **Repositorios:** `delfisalinasmich/weblearn-backend` y `delfisalinasmich/weblearn-frontend`
+- **Proceso de release:**
+  \`\`\`bash
+  # Tag con versión específica
+  docker tag weblearn-backend delfisalinasmich/weblearn-backend:v1.0
+  docker tag weblearn-frontend delfisalinasmich/weblearn-frontend:v1.0
+  
+  # Tag latest para desarrollo
+  docker tag weblearn-backend delfisalinasmich/weblearn-backend:latest
+  docker tag weblearn-frontend delfisalinasmich/weblearn-frontend:latest
+  
+  # Push a Docker Hub
+  docker push delfisalinasmich/weblearn-backend:v1.0
+  docker push delfisalinasmich/weblearn-frontend:v1.0
+  \`\`\`
+
+**Estrategia futura:**
+- **v1.x** para patches y bug fixes
+- **v2.x** para cambios mayores con breaking changes
+- **Tags de entorno** como `qa`, `staging`, `prod` para diferentes ambientes
+
 ## 4. Base de Datos
 
 **Base de datos elegida:** MySQL 8.0
