@@ -1,70 +1,342 @@
-# Getting Started with Create React App
+# WebLearn - Aplicación de Cursos Containerizada
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación web de gestión de cursos desarrollada con Go (backend) y JavaScript/React (frontend), completamente containerizada con Docker.
 
-## Available Scripts
+## 🏗️ Arquitectura
 
-In the project directory, you can run:
+- **Backend**: API REST en Go con Gin framework
+- **Frontend**: Aplicación web con React servida por Nginx
+- **Base de datos**: MySQL 8.0
+- **Containerización**: Docker con multi-stage builds
+- **Orquestación**: Docker Compose para entornos QA y PROD
 
-### `npm start`
+## 📋 Prerrequisitos
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Docker Engine 20.10+
+- Docker Compose 2.0+
+- Git
+- Cuenta en Docker Hub (opcional, para pull de imágenes)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Instrucciones de Uso
 
-### `npm test`
+### 1. Clonar el Repositorio
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+\`\`\`bash
+git clone <tu-repositorio>
+cd TP2
+\`\`\`
 
-### `npm run build`
+### 2. Construir las Imágenes (Opcional)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Las imágenes ya están disponibles en Docker Hub, pero puedes construirlas localmente:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+\`\`\`bash
+# Backend
+docker build -t weblearn-backend ./backend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Frontend  
+docker build -t weblearn-frontend ./frontend
+\`\`\`
 
-### `npm run eject`
+### 3. Ejecutar los Contenedores
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### Opción A: Entorno Unificado (QA + PROD)
+\`\`\`bash
+# Levantar ambos entornos simultáneamente
+docker-compose up -d
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Verificar estado
+docker-compose ps
+\`\`\`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Opción B: Entornos Separados
+\`\`\`bash
+# Solo QA
+docker-compose -f docker-compose.qa.yml up -d
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Solo PROD
+docker-compose -f docker-compose.prod.yml up -d
+\`\`\`
 
-## Learn More
+### 4. Acceder a la Aplicación
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### URLs de Acceso
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Entorno QA:**
+- Frontend: http://localhost:8001
+- Backend API: http://localhost:8081
+- Base de datos: localhost:3308
 
-### Code Splitting
+**Entorno PROD:**
+- Frontend: http://localhost:8002
+- Backend API: http://localhost:8082
+- Base de datos: localhost:3309
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### Puertos Utilizados
 
-### Analyzing the Bundle Size
+| Servicio | QA | PROD |
+|----------|----|----- |
+| Frontend | 8001 | 8002 |
+| Backend | 8081 | 8082 |
+| MySQL | 3308 | 3309 |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🗄️ Conectarse a la Base de Datos
 
-### Making a Progressive Web App
+### Credenciales por Defecto
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+**QA:**
+\`\`\`
+Host: localhost
+Puerto: 3308
+Usuario: root
+Contraseña: qa_password
+Base de datos: weblearn_qa
+\`\`\`
 
-### Advanced Configuration
+**PROD:**
+\`\`\`
+Host: localhost
+Puerto: 3309
+Usuario: root
+Contraseña: prod_password
+Base de datos: weblearn_prod
+\`\`\`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Conexión desde Terminal
 
-### Deployment
+\`\`\`bash
+# QA
+mysql -h localhost -P 3308 -u root -pqa_password weblearn_qa
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+# PROD
+mysql -h localhost -P 3309 -u root -pprod_password weblearn_prod
+\`\`\`
 
-### `npm run build` fails to minify
+### Conexión desde Aplicación
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Las aplicaciones se conectan automáticamente usando las variables de entorno configuradas en docker-compose.yml.
+
+## ✅ Verificar Funcionamiento
+
+### 1. Estado de Contenedores
+\`\`\`bash
+docker-compose ps
+\`\`\`
+Todos los servicios deben mostrar estado "Up" y "healthy".
+
+### 2. Logs de Aplicación
+\`\`\`bash
+# Ver logs de todos los servicios
+docker-compose logs
+
+# Logs específicos
+docker-compose logs backend-qa
+docker-compose logs frontend-prod
+\`\`\`
+
+### 3. Health Checks
+\`\`\`bash
+# Backend QA
+curl http://localhost:8081/health
+
+# Backend PROD
+curl http://localhost:8082/health
+\`\`\`
+
+### 4. Verificar Base de Datos
+\`\`\`bash
+# Conectar y verificar tablas
+docker exec -it weblearn-db-qa mysql -u root -pqa_password -e "USE weblearn_qa; SHOW TABLES;"
+\`\`\`
+
+### 5. Prueba de Persistencia
+\`\`\`bash
+# Reiniciar contenedores
+docker-compose restart
+
+# Verificar que los datos persisten
+curl http://localhost:8081/cursos
+\`\`\`
+
+## 🔧 Comandos Útiles
+
+### Gestión de Contenedores
+\`\`\`bash
+# Detener todos los servicios
+docker-compose down
+
+# Detener y eliminar volúmenes
+docker-compose down -v
+
+# Reconstruir imágenes
+docker-compose build --no-cache
+
+# Ver uso de recursos
+docker stats
+\`\`\`
+
+### Gestión de Volúmenes
+\`\`\`bash
+# Listar volúmenes
+docker volume ls | grep weblearn
+
+# Inspeccionar volumen
+docker volume inspect weblearn_mysql_data_qa
+
+# Backup de base de datos
+docker exec weblearn-db-qa mysqldump -u root -pqa_password weblearn_qa > backup_qa.sql
+\`\`\`
+
+### Limpieza del Sistema
+\`\`\`bash
+# Eliminar contenedores detenidos
+docker container prune
+
+# Eliminar imágenes no utilizadas
+docker image prune -a
+
+# Eliminar volúmenes no utilizados
+docker volume prune
+\`\`\`
+
+## 🐳 Imágenes en Docker Hub
+
+Las imágenes están disponibles públicamente:
+
+- **Backend**: `delfisalinasmich/weblearn-backend:v1.0`
+- **Frontend**: `delfisalinasmich/weblearn-frontend:v1.0`
+
+### Tags Disponibles
+- `v1.0`: Versión estable de producción
+- `latest`: Última versión de desarrollo
+
+## 🔄 Variables de Entorno
+
+### QA Environment
+\`\`\`env
+APP_ENV=qa
+GIN_MODE=debug
+DB_HOST=weblearn-db-qa
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=qa_password
+DB_NAME=weblearn_qa
+\`\`\`
+
+### PROD Environment
+\`\`\`env
+APP_ENV=production
+GIN_MODE=release
+DB_HOST=weblearn-db-prod
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=prod_password
+DB_NAME=weblearn_prod
+\`\`\`
+
+## 📊 Monitoreo y Logs
+
+### Logs en Tiempo Real
+\`\`\`bash
+# Seguir logs de todos los servicios
+docker-compose logs -f
+
+# Logs específicos con timestamps
+docker-compose logs -f --timestamps backend-qa
+\`\`\`
+
+### Métricas de Contenedores
+\`\`\`bash
+# Uso de recursos en tiempo real
+docker stats
+
+# Información detallada de un contenedor
+docker inspect weblearn-backend-qa
+\`\`\`
+
+## 🚨 Solución de Problemas
+
+### Problemas Comunes
+
+1. **Puerto ocupado**
+   \`\`\`bash
+   # Verificar qué proceso usa el puerto
+   lsof -i :8001
+   
+   # Cambiar puerto en docker-compose.yml si es necesario
+   \`\`\`
+
+2. **Contenedor no inicia**
+   \`\`\`bash
+   # Ver logs detallados
+   docker-compose logs nombre-servicio
+   
+   # Verificar configuración
+   docker-compose config
+   \`\`\`
+
+3. **Base de datos no conecta**
+   \`\`\`bash
+   # Verificar que MySQL esté listo
+   docker-compose logs db-qa
+   
+   # Probar conexión manual
+   docker exec -it weblearn-db-qa mysql -u root -pqa_password
+   \`\`\`
+
+4. **Volúmenes no persisten**
+   \`\`\`bash
+   # Verificar volúmenes montados
+   docker inspect weblearn-db-qa | grep Mounts -A 10
+   \`\`\`
+
+### Reinicio Completo
+\`\`\`bash
+# Detener todo y limpiar
+docker-compose down -v
+docker system prune -f
+
+# Levantar desde cero
+docker-compose up -d
+\`\`\`
+
+## 📁 Estructura del Proyecto
+
+\`\`\`
+TP2/
+├── backend/
+│   ├── Dockerfile
+│   ├── main.go
+│   └── ...
+├── frontend/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── ...
+├── docker-compose.yml
+├── docker-compose.qa.yml
+├── docker-compose.prod.yml
+├── .env.qa
+├── .env.prod
+├── decisiones.md
+└── README.md
+\`\`\`
+
+## 📚 Documentación Adicional
+
+- `decisiones.md`: Justificaciones técnicas y arquitecturales
+- Logs de aplicación: Disponibles via `docker-compose logs`
+- Health checks: Configurados en todos los servicios
+
+## 🤝 Contribución
+
+1. Fork del repositorio
+2. Crear rama feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit cambios (`git commit -am 'Agregar nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Crear Pull Request
+
+---
+
+**Desarrollado por**: [Tu nombre]  
+**Curso**: Ingeniería de Software III  
+**Universidad**: [Tu universidad]
