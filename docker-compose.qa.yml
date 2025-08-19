@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend-qa:
+    image: delfisalinasmich/weblearn-backend:v1.0
+    container_name: weblearn-backend-qa
+    ports:
+      - "8081:8080"
+    env_file:
+      - .env.qa
+    depends_on:
+      - db-qa
+    networks:
+      - qa-network
+    restart: unless-stopped
+
+  frontend-qa:
+    image: delfisalinasmich/weblearn-frontend:v1.0
+    container_name: weblearn-frontend-qa
+    ports:
+      - "8001:80"
+    env_file:
+      - .env.qa
+    depends_on:
+      - backend-qa
+    networks:
+      - qa-network
+    restart: unless-stopped
+
+  db-qa:
+    image: mysql:8.0
+    container_name: weblearn-db-qa
+    ports:
+      - "3308:3306"
+    env_file:
+      - .env.qa
+    volumes:
+      - mysql_data_qa:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    networks:
+      - qa-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data_qa:
+
+networks:
+  qa-network:
+    driver: bridge
+

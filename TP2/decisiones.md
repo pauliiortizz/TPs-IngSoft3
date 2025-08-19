@@ -130,3 +130,90 @@ db:
 
 **Red:** `app-network` (bridge) para comunicación entre servicios
 **Volúmenes:** `mysql_data` para persistencia de base de datos
+
+## 7. Configuración de Entornos QA y PROD
+
+### Estrategia de Variables de Entorno
+
+**Enfoque elegido:** Archivos `.env` separados por entorno
+
+**Justificación:**
+- **Separación clara** entre configuraciones de QA y PROD
+- **Misma imagen** con diferentes comportamientos según variables
+- **Seguridad** mediante contraseñas diferentes por entorno
+- **Flexibilidad** para agregar nuevos entornos fácilmente
+
+### Variables de Entorno Definidas
+
+**Base de Datos:**
+- `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
+- Cada entorno tiene su propia base de datos independiente
+
+**Aplicación:**
+- `GIN_MODE`: `debug` (QA) vs `release` (PROD)
+- `LOG_LEVEL`: `debug` (QA) vs `error` (PROD)
+- `APP_ENV`: Identificación del entorno actual
+
+**Frontend:**
+- `REACT_APP_API_URL`: URLs diferentes para cada backend
+- `REACT_APP_ENV`: Configuración específica del frontend
+
+### Configuración por Entorno
+
+**QA (Desarrollo/Testing):**
+\`\`\`yaml
+# Puertos: Frontend 8001, Backend 8081, DB 3308
+# Modo debug activado para logs detallados
+# Base de datos: weblearn_qa
+# Contraseña: qa_password_2024
+\`\`\`
+
+**PROD (Producción):**
+\`\`\`yaml
+# Puertos: Frontend 8002, Backend 8082, DB 3309
+# Modo release para mejor rendimiento
+# Base de datos: weblearn_prod
+# Contraseña: prod_secure_password_2024
+# Límites de recursos configurados
+\`\`\`
+
+### Ejecución Simultánea
+
+**Comandos de gestión:**
+\`\`\`bash
+# Iniciar ambos entornos
+./start-environments.sh
+
+# Detener ambos entornos
+./stop-environments.sh
+\`\`\`
+
+**URLs de acceso:**
+- **QA:** Frontend `http://localhost:8001`, Backend `http://localhost:8081`
+- **PROD:** Frontend `http://localhost:8002`, Backend `http://localhost:8082`
+
+### Beneficios de esta Arquitectura
+
+1. **Aislamiento completo** entre entornos
+2. **Misma imagen** garantiza consistencia
+3. **Configuración flexible** mediante variables
+4. **Fácil escalabilidad** para nuevos entornos
+5. **Testing seguro** sin afectar producción
+
+### Arquitectura Multi-Entorno
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                    MISMO HOST                                │
+├─────────────────────────────────────────────────────────────┤
+│  QA Environment          │         PROD Environment         │
+│  ┌─────────┐ ┌─────────┐ │ ┌─────────┐ ┌─────────┐         │
+│  │Frontend │ │Backend  │ │ │Frontend │ │Backend  │         │
+│  │:8001    │ │:8081    │ │ │:8002    │ │:8082    │         │
+│  └─────────┘ └─────────┘ │ └─────────┘ └─────────┘         │
+│       │           │      │      │           │              │
+│  ┌─────────────────┐     │ ┌─────────────────┐             │
+│  │   MySQL QA      │     │ │   MySQL PROD    │             │
+│  │   :3308         │     │ │   :3309         │             │
+│  └─────────────────┘     │ └─────────────────┘             │
+└─────────────────────────────────────────────────────────────┘
