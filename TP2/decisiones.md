@@ -351,4 +351,120 @@ docker-compose down
 │  │   Volume: qa    │     │ │   Volume: prod  │             │
 │  └─────────────────┘     │ └─────────────────┘             │
 └─────────────────────────────────────────────────────────────┘
-  
+  ## 9. Convención de Versionado de Imágenes
+
+### Estrategia de Versionado Elegida: Semantic Versioning (SemVer)
+
+**Formato:** `MAJOR.MINOR.PATCH` (ej: v1.0.0, v1.1.0, v2.0.0)
+
+### Implementación Actual
+
+**Versión estable:** `v1.0`
+- Backend: `delfisalinasmich/weblearn-backend:v1.0`
+- Frontend: `delfisalinasmich/weblearn-frontend:v1.0`
+
+**Tags adicionales:**
+- `latest`: Apunta siempre a la versión más reciente estable
+- `v1.0`: Versión específica para reproducibilidad
+
+### Justificación de la Convención
+
+**1. Semantic Versioning (SemVer)**
+- **MAJOR** (v2.0): Cambios incompatibles en la API
+- **MINOR** (v1.1): Nueva funcionalidad compatible hacia atrás
+- **PATCH** (v1.0.1): Correcciones de bugs compatibles
+
+**2. Beneficios de esta estrategia:**
+- **Reproducibilidad**: Versiones específicas garantizan builds idénticos
+- **Rollback seguro**: Fácil volver a versiones anteriores
+- **Gestión de dependencias**: Control preciso de versiones
+- **CI/CD friendly**: Automatización de releases basada en tags
+
+**3. Estrategia de tags:**
+\`\`\`bash
+# Versión específica (recomendado para producción)
+docker tag weblearn-backend delfisalinasmich/weblearn-backend:v1.0  # Versión específica
+
+# Tag latest (para desarrollo)
+docker tag weblearn-backend delfisalinasmich/weblearn-backend:latest  # Última versión
+
+# Versiones futuras
+docker tag weblearn-backend delfisalinasmich/weblearn-backend:v1.1
+docker tag weblearn-backend delfisalinasmich/weblearn-backend:v2.0
+\`\`\`
+
+### Uso en Docker Compose
+
+**Producción (versión fija):**
+\`\`\`yaml
+services:
+  backend-prod:
+    image: delfisalinasmich/weblearn-backend:v1.0  # Versión específica
+\`\`\`
+
+**Desarrollo (versión latest):**
+\`\`\`yaml
+services:
+  backend-dev:
+    image: delfisalinasmich/weblearn-backend:latest  # Última versión
+\`\`\`
+
+### Proceso de Release
+
+**1. Desarrollo:**
+- Commits en feature branches
+- Build automático con tag `latest`
+
+**2. Testing:**
+- QA usa versión específica (ej: `v1.0-rc1`)
+- Validación completa antes de release
+
+**3. Producción:**
+- Tag final (ej: `v1.0`)
+- Deploy con versión específica
+- Actualización de `latest` tag
+
+### Ventajas de Versiones Específicas
+
+**Reproducibilidad garantizada:**
+- Mismo comportamiento en cualquier entorno
+- Builds idénticos independientemente del momento
+
+**Rollback controlado:**
+- Volver a versión anterior es inmediato
+- Sin sorpresas por cambios no documentados
+
+**Auditoría completa:**
+- Historial de versiones en Docker Hub
+- Trazabilidad de cambios por versión
+
+**Gestión de entornos:**
+- QA puede usar `v1.1-beta`
+- PROD mantiene `v1.0` estable
+- DEV usa `latest` para nuevas features
+
+### Comandos de Gestión de Versiones
+
+**Crear nueva versión:**
+\`\`\`bash
+# Build y tag
+docker build -t weblearn-backend .
+docker tag weblearn-backend delfisalinasmich/weblearn-backend:v1.1
+docker tag weblearn-backend delfisalinasmich/weblearn-backend:latest
+
+# Push a Docker Hub
+docker push delfisalinasmich/weblearn-backend:v1.1
+docker push delfisalinasmich/weblearn-backend:latest
+\`\`\`
+
+**Actualizar docker-compose:**
+\`\`\`bash
+# Cambiar versión en docker-compose.yml
+sed -i 's/:v1.0/:v1.1/g' docker-compose.yml
+
+# Aplicar cambios
+docker-compose pull
+docker-compose up -d
+\`\`\`
+
+Esta convención asegura deployments predecibles, facilita el mantenimiento y permite una gestión profesional del ciclo de vida de la aplicación.
