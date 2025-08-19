@@ -2,7 +2,7 @@
 
 Aplicación web de gestión de cursos desarrollada con Go (backend) y JavaScript/React (frontend), completamente containerizada con Docker.
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 - **Backend**: API REST en Go con Gin framework
 - **Frontend**: Aplicación web con React servida por Nginx
@@ -10,14 +10,14 @@ Aplicación web de gestión de cursos desarrollada con Go (backend) y JavaScript
 - **Containerización**: Docker con multi-stage builds
 - **Orquestación**: Docker Compose para entornos QA y PROD
 
-## 📋 Prerrequisitos
+## Prerrequisitos
 
 - Docker Engine 20.10+
 - Docker Compose 2.0+
 - Git
 - Cuenta en Docker Hub (opcional, para pull de imágenes)
 
-## 🚀 Instrucciones de Uso
+## Instrucciones de Uso
 
 ### 1. Clonar el Repositorio
 
@@ -80,7 +80,7 @@ docker-compose -f docker-compose.prod.yml up -d
 | Backend | 8081 | 8082 |
 | MySQL | 3308 | 3309 |
 
-## 🗄️ Conectarse a la Base de Datos
+## Conectarse a la Base de Datos
 
 ### Credenciales por Defecto
 
@@ -116,7 +116,7 @@ mysql -h localhost -P 3309 -u root -pprod_password weblearn_prod
 
 Las aplicaciones se conectan automáticamente usando las variables de entorno configuradas en docker-compose.yml.
 
-## ✅ Verificar Funcionamiento
+## Verificar Funcionamiento
 
 ### 1. Estado de Contenedores
 \`\`\`bash
@@ -210,7 +210,7 @@ Las imágenes están disponibles públicamente:
 - `v1.0`: Versión estable de producción
 - `latest`: Última versión de desarrollo
 
-## 🔄 Variables de Entorno
+## Variables de Entorno
 
 ### QA Environment
 \`\`\`env
@@ -234,7 +234,7 @@ DB_PASSWORD=prod_password
 DB_NAME=weblearn_prod
 \`\`\`
 
-## 📊 Monitoreo y Logs
+## Monitoreo y Logs
 
 ### Logs en Tiempo Real
 \`\`\`bash
@@ -254,7 +254,7 @@ docker stats
 docker inspect weblearn-backend-qa
 \`\`\`
 
-## 🚨 Solución de Problemas
+## Solución de Problemas
 
 ### Problemas Comunes
 
@@ -321,13 +321,13 @@ TP2/
 └── README.md
 \`\`\`
 
-## 📚 Documentación Adicional
+## Documentación Adicional
 
 - `decisiones.md`: Justificaciones técnicas y arquitecturales
 - Logs de aplicación: Disponibles via `docker-compose logs`
 - Health checks: Configurados en todos los servicios
 
-## 🤝 Contribución
+## Contribución
 
 1. Fork del repositorio
 2. Crear rama feature (`git checkout -b feature/nueva-funcionalidad`)
@@ -337,6 +337,5 @@ TP2/
 
 ---
 
-**Desarrollado por**: [Tu nombre]  
 **Curso**: Ingeniería de Software III  
-**Universidad**: [Tu universidad]
+**Universidad**: Universidad Católica de Córdoba
