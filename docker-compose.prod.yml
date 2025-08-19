@@ -11,7 +11,9 @@ services:
     depends_on:
       - db-prod
     networks:
-      - prod-network
+      prod-network:
+        aliases:
+          - backend
     restart: unless-stopped
     deploy:
       resources:

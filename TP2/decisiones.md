@@ -217,3 +217,138 @@ db:
 │  │   :3308         │     │ │   :3309         │             │
 │  └─────────────────┘     │ └─────────────────┘             │
 └─────────────────────────────────────────────────────────────┘
+
+## 8. Entorno Reproducible con Docker Compose
+
+### Estrategia de Reproducibilidad
+
+**Archivo unificado:** `docker-compose.yml` que levanta QA y PROD simultáneamente
+
+**Garantías de reproducibilidad:**
+
+1. **Versiones fijas de imágenes**
+   - Backend: `delfisalinasmich/weblearn-backend:v1.0`
+   - Frontend: `delfisalinasmich/weblearn-frontend:v1.0`
+   - Base de datos: `mysql:8.0` (versión específica)
+
+2. **Variables de entorno centralizadas**
+   - Archivos `.env.qa` y `.env.prod` con configuraciones específicas
+   - Variables de entorno explícitas en docker-compose.yml
+   - Configuración consistente entre entornos
+
+3. **Volúmenes nombrados persistentes**
+   - `mysql_data_qa` y `mysql_data_prod` para persistencia de datos
+   - Inicialización automática con `init-db.sql`
+   - Separación completa de datos entre entornos
+
+4. **Health checks automáticos**
+   - Verificación de estado de todos los servicios
+   - Reintentos automáticos en caso de falla
+   - Monitoreo continuo de disponibilidad
+
+5. **Límites de recursos definidos**
+   - Memoria limitada para PROD (optimización)
+   - Recursos reservados para garantizar disponibilidad
+   - Prevención de consumo excesivo de recursos
+
+6. **Redes aisladas**
+   - `weblearn-qa-network` y `weblearn-prod-network`
+   - Aislamiento completo entre entornos
+   - Comunicación interna segura
+
+### Configuración de Servicios
+
+**QA Environment:**
+\`\`\`yaml
+# Puertos: 8001 (frontend), 8081 (backend), 3308 (db)
+# Modo debug para desarrollo y testing
+# Health checks cada 30 segundos
+# Sin límites de recursos para flexibilidad
+\`\`\`
+
+**PROD Environment:**
+\`\`\`yaml
+# Puertos: 8002 (frontend), 8082 (backend), 3309 (db)
+# Modo release para rendimiento óptimo
+# Límites de memoria configurados
+# Health checks más estrictos
+\`\`\`
+
+### Comandos de Gestión
+
+**Iniciar entorno completo:**
+\`\`\`bash
+docker-compose up -d
+\`\`\`
+
+**Ver estado de servicios:**
+\`\`\`bash
+docker-compose ps
+\`\`\`
+
+**Ver logs específicos:**
+\`\`\`bash
+docker-compose logs backend-qa
+docker-compose logs backend-prod
+\`\`\`
+
+**Detener entorno:**
+\`\`\`bash
+docker-compose down
+\`\`\`
+
+### Asegurar Ejecución Idéntica
+
+**Prerrequisitos documentados:**
+- Docker Engine 20.10+
+- Docker Compose 2.0+
+- Puertos específicos disponibles
+- 4GB RAM mínimo
+
+**Archivos de configuración:**
+- `.env.qa` y `.env.prod` con variables específicas
+- `init-db.sql` para inicialización de base de datos
+- `docker-compose.yml` con configuración completa
+
+**Verificación automática:**
+- Health checks en todos los servicios
+- Dependencias explícitas entre servicios
+- Reinicio automático en caso de falla
+
+**Script de configuración:**
+\`\`\`bash
+# setup-environment.sh verifica prerrequisitos
+# Crea archivos de configuración faltantes
+# Valida que el entorno esté listo
+\`\`\`
+
+### Beneficios del Entorno Unificado
+
+1. **Un solo comando** levanta QA y PROD
+2. **Configuración centralizada** en un archivo
+3. **Aislamiento garantizado** entre entornos
+4. **Monitoreo automático** de todos los servicios
+5. **Reproducibilidad total** en cualquier máquina
+6. **Escalabilidad** para agregar nuevos entornos
+
+### Arquitectura Final
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                 DOCKER COMPOSE UNIFICADO                    │
+├─────────────────────────────────────────────────────────────┤
+│  QA Network              │         PROD Network             │
+│  ┌─────────┐ ┌─────────┐ │ ┌─────────┐ ┌─────────┐         │
+│  │Frontend │ │Backend  │ │ │Frontend │ │Backend  │         │
+│  │:8001    │ │:8081    │ │ │:8002    │ │:8082    │         │
+│  │HealthCk │ │HealthCk │ │ │HealthCk │ │HealthCk │         │
+│  └─────────┘ └─────────┘ │ └─────────┘ └─────────┘         │
+│       │           │      │      │           │              │
+│  ┌─────────────────┐     │ ┌─────────────────┐             │
+│  │   MySQL QA      │     │ │   MySQL PROD    │             │
+│  │   :3308         │     │ │   :3309         │             │
+│  │   HealthCheck   │     │ │   HealthCheck   │             │
+│  │   Volume: qa    │     │ │   Volume: prod  │             │
+│  └─────────────────┘     │ └─────────────────┘             │
+└─────────────────────────────────────────────────────────────┘
+  

@@ -11,7 +11,9 @@ services:
     depends_on:
       - db-qa
     networks:
-      - qa-network
+      qa-network:
+        aliases:
+          - backend
     restart: unless-stopped
 
   frontend-qa:
