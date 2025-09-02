@@ -16,6 +16,7 @@ El repositorio se organizó como **mono-repo** con la siguiente estructura:
 - /azure-pipelines.yml → definición del pipeline de CI
 - /README.md
 - /decisiones.md
+- /Evidencia.pdf
 
 
 ---
