@@ -2,69 +2,49 @@
 
 # 1. Configuración inicial del proyecto
 ## Decisión
-Usar **Scrum** con sprints de 2 semanas y seguimiento en Azure Boards.
-
-## Contexto
-- Requisitos cambiantes y necesidad de feedback frecuente del usuario.
-- Equipo pequeño/mediano con entregas incrementales.
-- Azure Boards soporta artefactos de Scrum (Epic → Product Backlog Item → Task) y sprints. 
-
-## Alternativas consideradas
-- **Agile (Agile process)**: flexible, pero Scrum aporta más cadencia y ceremonias.
-- **Basic**: muy simple para equipos sin experiencia ágil; se queda corto para épicas/planificación.
-- **CMMI**: más pesado, orientado a proyectos con fuerte gobierno.
-
-## Consecuencias
-- Timeboxing de 2 semanas.
-- Métricas: Velocidad, Burn-down, % de historias Done.
-- Board con columnas To Do / Doing / Code Review / Testing / Done.
-- Estimación por **Story Points**; descomposición a **Tasks** (horas).
-
-## Estado
-Aceptada (fecha: AAAA-MM-DD).
+Usamos **Agile** ya que con las otras opciones no aparecian las User Stories. 
 
 # 2. Gestión del trabajo con Azure Boards
+Hicimos 3 equipos, ademas del principal. 
+Creamos un sprint para el equipo 1 (de dos semanas) y le asignamos las US con sus tareas designadas.
 
-## Jerarquía de trabajo
-Epic → User Story (PBI) → Task
-Bug se gestiona en paralelo y se liga a la US afectada cuando corresponda.
-
-## Definiciones
-- **Epic**: funcionalidad de alto nivel (2–6 sprints).
-- **User Story**: valor de negocio negociable, estimada en **Story Points**.
-- **Task**: trabajo técnico, estimado en **horas**.
-- **Bug**: defecto reproducible con pasos, resultado esperado y actual.
-
-## Estados del flujo
-To Do → Doing → Code Review → Testing → Done  
-(Ajuste de columnas en Boards por equipo.)
-
-## Sprints
-Duración: 2 semanas. Fechas explícitas por Iteration Path.  
-Capacidad: sumatoria de horas en Tasks; objetivo: completar US comprometidas.
-
-## Criterios (Definition of Done)
-- Código mergeado a `main` vía PR aprobado.
-- Pipeline verde (build + test).
-- Aceptación funcional validada.
-- Documentación mínima (README/Changelog).
+- Agile (Epic → User Story → Task) y sprints.
 
 # 3. Control de versiones con Azure Repos
 
-## Reglas
-- `main` siempre *deployable*; protegido con Branch Policies (PR + 1 reviewer + build).
-- Cada cambio nace en `feature/<tema>` desde `main`.
-- Trabajo se integra vía **Pull Request** con:
-  - Reviewer(s) mínimo 1
-  - Pipeline de PR en verde (Build validation)
-  - Work items vinculados
+## 🔹 Rama principal
+- **main**  
+  - Rama protegida.  
+  - Configurada con políticas obligatorias:  
+    - Requiere Pull Request para mergear cambios.  
+    - Requiere al menos **1 reviewer**.  
+    - No se permite push directo a `main`.  
 
-## Lanzamientos y hotfix
-- Se etiqueta release en `main` (tag `vX.Y.Z`).
-- Hotfix: `hotfix/<incidente>` desde `main`, PR a `main` con prioridad.
+---
 
-## Por qué no GitFlow clásico
-- GitFlow añade ramas `develop`/`release` que incrementan complejidad.
-- Nuestro equipo busca ciclos cortos (2 semanas) y *continuous delivery*.
+## 🔹 Ramas de feature
+Creamos ramas de funcionalidad siguiendo la convención `feature/<nombre>`.    
+- `feature/registro-email` → Implementación del registro de usuario.  
+- `feature/login-jwt` → Implementación del inicio de sesión con JWT.  
+
+---
+
+## 🔹 Flujo de trabajo (Workflow)
+1. Se parte siempre desde la rama `main`.  
+2. Se crea una rama de feature:  
+   ```bash
+   git checkout -b feature/registro-email
+   git push origin feature/registro-email
+
+Hicimos dos cambios para probar los PR
+- git checkout feature/registro-email
+
+# Creamos un archivo de prueba
+- echo "print('Funcionalidad de registro')" > registro.py
+
+# Guardamos y subimos
+- git add registro.py
+- git commit -m "Agrego script de prueba para registro"
+- git push origin feature/registro-email
 
 
