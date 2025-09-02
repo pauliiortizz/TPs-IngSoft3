@@ -37,14 +37,17 @@ Creamos ramas de funcionalidad siguiendo la convención `feature/<nombre>`.
    git push origin feature/registro-email
 
 Hicimos dos cambios para probar los PR
-- git checkout feature/registro-email
-
+ ```bash
+git checkout feature/registro-email
+```
 # Creamos un archivo de prueba
-- echo "print('Funcionalidad de registro')" > registro.py
-
+ ```bash
+echo "print('Funcionalidad de registro')" > registro.py
+```
 # Guardamos y subimos
-- git add registro.py
-- git commit -m "Agrego script de prueba para registro"
-- git push origin feature/registro-email
-
+ ```bash
+git add registro.py
+git commit -m "Agrego script de prueba para registro"
+git push origin feature/registro-email
+```
 
