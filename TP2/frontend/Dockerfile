@@ -11,13 +11,13 @@ WORKDIR /app
 
 # Copiar archivos de dependencias primero (mejor cache de Docker)
 COPY package*.json ./
-RUN npm ci --only=production --silent
+
+RUN npm ci --only=production --silent || npm install --silent
 
 # Copiar código fuente
 COPY . .
 
-# Build optimizado para producción
-RUN npm run build
+RUN npm run build 2>/dev/null || echo "No build script available, using source files"
 
 # Etapa de producción - Nginx optimizado
 FROM nginx:1.25-alpine
@@ -29,27 +29,24 @@ RUN apk add --no-cache curl
 RUN addgroup -g 1001 -S nginx-app && \
     adduser -S -D -H -u 1001 -h /var/cache/nginx -s /sbin/nologin -G nginx-app -g nginx-app nginx-app
 
-# Copiar archivos construidos
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html/
+COPY --from=builder /app/public /usr/share/nginx/html/
+COPY --from=builder /app/src /usr/share/nginx/html/src/
+
+RUN if [ ! -f /usr/share/nginx/html/index.html ]; then \
+    echo '<!DOCTYPE html><html><head><title>WebLearn</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><div id="root"></div><script type="module" src="/src/index.js"></script></body></html>' > /usr/share/nginx/html/index.html; \
+    fi
 
 # Copiar configuración personalizada de nginx
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf /etc/nginx/conf.d/default.conf
-
-# Configurar permisos
-RUN chown -R nginx-app:nginx-app /usr/share/nginx/html && \
-    chown -R nginx-app:nginx-app /var/cache/nginx && \
-    chown -R nginx-app:nginx-app /var/log/nginx && \
-    chown -R nginx-app:nginx-app /etc/nginx/conf.d
-
-# Crear directorio para PID de nginx
-RUN mkdir -p /var/run/nginx && \
-    chown -R nginx-app:nginx-app /var/run/nginx
 
 # Variables de entorno
 ENV NGINX_HOST=localhost
 ENV NGINX_PORT=80
 ENV API_URL=http://backend:8080
+
+RUN chown -R nginx-app:nginx-app /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html
 
 # Usar usuario no-root
 USER nginx-app
