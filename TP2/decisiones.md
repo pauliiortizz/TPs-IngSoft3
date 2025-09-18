@@ -468,3 +468,9 @@ docker-compose up -d
 \`\`\`
 
 Esta convención asegura deployments predecibles, facilita el mantenimiento y permite una gestión profesional del ciclo de vida de la aplicación.
+
+![Aca podemos ver que si agregamos un un curso dentro del puerto 8082 (backend prod)](image.png)
+
+![Y aca dentro de localhost8082 podemos ver como se agrego ese curso, pero en localhost8081 que es el de qa, no se agrego](image-1.png)
+
+![](image-2.png)
