@@ -8,16 +8,16 @@ Este documento resume las decisiones tomadas, configuraciones realizadas y evide
 
 - **Backend**
   - Se crearon **Azure Web Apps** separados para QA y Producción:
-    - `[tp05-backend-qa.azurewebsites.net](https://tp05-backend-qa-chdtg5exgzarc7hd.brazilsouth-01.azurewebsites.net/)`
-    - `[tp05-backend-prod.azurewebsites.net](https://tp05-backend-prod-cudvdwd9c0exdbhc.brazilsouth-01.azurewebsites.net/)`
+    - [tp05-backend-qa.azurewebsites.net](https://tp05-backend-qa-chdtg5exgzarc7hd.brazilsouth-01.azurewebsites.net/)
+    - [tp05-backend-prod.azurewebsites.net](https://tp05-backend-prod-cudvdwd9c0exdbhc.brazilsouth-01.azurewebsites.net/)
   - Se configuró el pipeline para empaquetar el backend en `.zip` y desplegarlo en cada App Service.
 
 <img width="1153" height="72" alt="image" src="https://github.com/user-attachments/assets/5f04f9fb-76fc-4925-a23a-4f0f301375bd" />
 
 - **Frontend**
   - Se crearon **Azure Static Web Apps** para QA y Producción:
-    - `ambitious-cliff-063ec7210.1.azurestaticapps.net` (QA)
-    - `...` (Producción)
+    - https://polite-sky-043673010.1.azurestaticapps.net/) (QA)
+    - https://ambitious-cliff-063ec7210.1.azurestaticapps.net/ (Producción)
   - El despliegue se realiza desde la carpeta `build/` generada por React.
 
 <img width="1156" height="73" alt="image" src="https://github.com/user-attachments/assets/f9e20bdc-3484-45e7-8fbc-a577f8ca8062" />
@@ -68,20 +68,20 @@ Este documento resume las decisiones tomadas, configuraciones realizadas y evide
 ## 5. Health Checks
 
 - Se validaron los endpoints expuestos por los backends:
-  - QA → `https://tp05-backend-qa-chdtg5exgzarc7hd.brazilsouth-01.azurewebsites.net/users`
+  - QA → https://tp05-backend-qa-chdtg5exgzarc7hd.brazilsouth-01.azurewebsites.net/users
 
 <img width="1311" height="173" alt="image" src="https://github.com/user-attachments/assets/24108b5d-11c3-435a-8444-e5e7e1123060" />
 
-  - PROD → `https://tp05-backend-prod-cudvdwd9c0exdbhc.brazilsouth-01.azurewebsites.net/users`
+  - PROD → https://tp05-backend-prod-cudvdwd9c0exdbhc.brazilsouth-01.azurewebsites.net/users
 
 <img width="1292" height="185" alt="image" src="https://github.com/user-attachments/assets/d6448572-4a75-4067-9e20-5fcd7fb184f6" />
 
 - Ambos devuelven datos JSON correctamente.
 - Se planificó validar el frontend accediendo a la URL de Static Web Apps, confirmando integración con la API.
-  - QA → `https://polite-sky-043673010.1.azurestaticapps.net/`
+  - QA → https://polite-sky-043673010.1.azurestaticapps.net/
     <img width="482" height="168" alt="image" src="https://github.com/user-attachments/assets/5cd3817d-b28c-48e8-8d53-1ede35370083" />
 
-  - PROD → `https://ambitious-cliff-063ec7210.1.azurestaticapps.net/`
+  - PROD → https://ambitious-cliff-063ec7210.1.azurestaticapps.net/
     <img width="504" height="174" alt="image" src="https://github.com/user-attachments/assets/c3f27fc5-9cd1-4441-9fc1-52dba7dcea65" />
 
 
