@@ -1,4 +1,4 @@
-# Decisiones Técnicas - TP05
+# Decisiones Técnicas - TP05 - Salinas Delfina, Ortiz Paulina
 
 Este documento resume las decisiones tomadas, configuraciones realizadas y evidencias recopiladas durante el trabajo práctico de despliegue en la nube con Azure DevOps y Azure Portal.
 
@@ -34,16 +34,23 @@ Este documento resume las decisiones tomadas, configuraciones realizadas y evide
   - **Deploy_QA** → despliegue automático al entorno QA.
   - **Deploy_PROD** → despliegue manual al entorno PROD.
 
+<img width="788" height="238" alt="image" src="https://github.com/user-attachments/assets/d0e38132-241b-4687-a595-06b8ca6fdf18" />
+
 ---
 
 ## 3. Variables y Secrets
 
 - Se configuraron variables de entorno para distinguir entornos:
-  - `.env.qa` → `REACT_APP_API_URL=https://tp05-backend-qa.azurewebsites.net`
-  - `.env.prod` → `REACT_APP_API_URL=https://tp05-backend-prod.azurewebsites.net`
+  - `.env.qa` → `REACT_APP_API_URL=https://tp05-backend-qa-chdtg5exgzarc7hd.brazilsouth-01.azurewebsites.net/`
+  - `.env.prod` → `REACT_APP_API_URL=https://tp05-backend-prod-cudvdwd9c0exdbhc.brazilsouth-01.azurewebsites.net/`
 - Se almacenaron **deployment tokens** de Static Web Apps como secretos en Azure DevOps:
   - `$(SWA_TOKEN_QA)`
   - `$(SWA_TOKEN_PROD)`
+
+<img width="1068" height="243" alt="image" src="https://github.com/user-attachments/assets/1d38c256-8961-4b22-96d8-3e2e72a170fd" />
+
+<img width="947" height="471" alt="image" src="https://github.com/user-attachments/assets/125504d0-0332-4df8-a277-9467907dfe3e" />
+
 
 ---
 
@@ -53,34 +60,29 @@ Este documento resume las decisiones tomadas, configuraciones realizadas y evide
 - Responsables:
   - QA → despliegue automático tras la build.
   - PROD → requiere confirmación manual del responsable del equipo.
+    
+<img width="1070" height="293" alt="image" src="https://github.com/user-attachments/assets/6bce2f62-267e-4a0d-9aa4-26100e2f1d95" />
 
 ---
 
 ## 5. Health Checks
 
 - Se validaron los endpoints expuestos por los backends:
-  - QA → `https://tp05-backend-qa.azurewebsites.net/users`
-  - PROD → `https://tp05-backend-prod.azurewebsites.net/users`
+  - QA → `https://tp05-backend-qa-chdtg5exgzarc7hd.brazilsouth-01.azurewebsites.net/users`
+
+<img width="1311" height="173" alt="image" src="https://github.com/user-attachments/assets/24108b5d-11c3-435a-8444-e5e7e1123060" />
+
+  - PROD → `https://tp05-backend-prod-cudvdwd9c0exdbhc.brazilsouth-01.azurewebsites.net/users`
+
+<img width="1292" height="185" alt="image" src="https://github.com/user-attachments/assets/d6448572-4a75-4067-9e20-5fcd7fb184f6" />
+
 - Ambos devuelven datos JSON correctamente.
 - Se planificó validar el frontend accediendo a la URL de Static Web Apps, confirmando integración con la API.
 
 ---
 
-## 6. Evidencias
 
-- **Capturas de pantalla** (adjuntar en entrega final):
-  - Azure Portal con recursos creados (Web Apps y Static Web Apps).
-  - Configuración de variables de entorno.
-  - Pipeline en ejecución mostrando build + deploy exitosos.
-  - Health checks (endpoints QA/PROD funcionando).
-- **Archivos relevantes**:
-  - `azure-pipelines.yml`
-  - `staticwebapp.config.json` (para fallback de rutas SPA)
-  - `.env.qa` y `.env.prod`
-
----
-
-## 7. Decisiones importantes
+## 6. Decisiones importantes
 
 - Se eligió **Azure** como proveedor cloud por simplicidad y conexión nativa con Azure DevOps.
 - Separación clara de ambientes QA y PROD para:
