@@ -78,6 +78,12 @@ Este documento resume las decisiones tomadas, configuraciones realizadas y evide
 
 - Ambos devuelven datos JSON correctamente.
 - Se planificó validar el frontend accediendo a la URL de Static Web Apps, confirmando integración con la API.
+  - QA → `https://polite-sky-043673010.1.azurestaticapps.net/`
+    <img width="482" height="168" alt="image" src="https://github.com/user-attachments/assets/5cd3817d-b28c-48e8-8d53-1ede35370083" />
+
+  - PROD → `https://ambitious-cliff-063ec7210.1.azurestaticapps.net/`
+    <img width="504" height="174" alt="image" src="https://github.com/user-attachments/assets/c3f27fc5-9cd1-4441-9fc1-52dba7dcea65" />
+
 
 ---
 
