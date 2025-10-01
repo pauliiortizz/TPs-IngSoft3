@@ -32,7 +32,7 @@
 - DELETE /users/:id → elimina un usuario existente.
 - DELETE /users/:id con ID inexistente → responde 404.
 
-![Casos_de_Prueba_Backend](image-2.png)
+<img width="894" height="577" alt="image-2" src="https://github.com/user-attachments/assets/df49d20e-5326-4c83-9d1f-43c579073df4" />
 
 2. Frontend
 - App.test.js → verifica que se renderice el título de la aplicación.
@@ -40,7 +40,8 @@
 - UserList.test.js → renderiza la lista de usuarios usando el servicio mockeado.
 - Validación de casos edge en frontend: renderizado correcto cuando el arreglo está vacío.
 
-![Casos_de_Prueba_Frontend](image-3.png)
+<img width="403" height="311" alt="image-3" src="https://github.com/user-attachments/assets/a31a00d8-8992-4d51-98c3-e97d5aaadf2c" />
+
 
 
 # Integración con CI/CD
@@ -51,7 +52,7 @@
 
 - Esto asegura que únicamente versiones validadas lleguen a entornos finales.
 
-![alt text](image-7.png)
+<img width="770" height="528" alt="image-7" src="https://github.com/user-attachments/assets/b74a09a6-892b-4f2b-a8af-a1700a527499" />
 
 
-![alt text](image-8.png)
+<img width="767" height="526" alt="image-8" src="https://github.com/user-attachments/assets/bc28789c-0556-453b-918f-43d86e7e0fc8" />
