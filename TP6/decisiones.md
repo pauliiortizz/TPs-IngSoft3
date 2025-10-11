@@ -1,58 +1,68 @@
-# Frameworks de testing elegidos
+# Decisiones de Testing y Evidencias
 
-1. Backend (Node.js + Express):
-- Jest: framework de testing rápido y ampliamente usado en proyectos JS.
-- Supertest: permite testear endpoints HTTP simulando requests sin levantar el servidor real.
-- SQLite in-memory: usado para los tests en lugar de MySQL, lo que permite ejecutar pruebas aisladas sin depender de una base de datos externa.
+## Frameworks elegidos y justificación
 
-2. Frontend (React):
-- Jest: framework integrado por defecto con Create React App.
-- React Testing Library (@testing-library/react): para testear componentes React a nivel de usuario (interacciones y contenido renderizado).
-- @testing-library/jest-dom: agrega matchers personalizados como toBeInTheDocument.
-- Axios (mockeado con Jest): se utiliza en los servicios para llamadas HTTP, pero en los tests se reemplaza por un mock para aislar dependencias externas.
+- Backend (.NET 8):
+  - xUnit: framework de pruebas moderno, bien soportado en .NET y ampliamente utilizado en la comunidad.
+  - Moq: mocking framework para aislar dependencias (por ejemplo, `ILogger<T>` y repositorios/DbContext en escenarios específicos).
+  - EF Core InMemory: proveedor en memoria para testear lógica de datos sin requerir una base real; rápido y determinista.
+  - Coverlet (XPlat Code Coverage): recolección de cobertura integrada con `dotnet test` y compatible con Azure DevOps.
 
-# Estrategia de mocking
+- Frontend (Angular 17):
+  - Karma + Jasmine: stack por defecto en Angular para unit tests; integración directa con @angular-devkit y ChromeHeadless.
+  - Headless Chrome: ejecución rápida y estable en CI; evita UI y reduce flakiness.
+  - Reporte JUnit: facilita publicar resultados en Azure DevOps.
+  - Istanbul (coverage): cobertura de líneas, funciones y ramas con reporte HTML y texto.
 
-1. Backend:
-- La conexión real a MySQL fue reemplazada por SQLite en memoria, usando sequelize.sync({ force: true }) para crear las tablas al inicio de cada suite.
-- Esto asegura independencia de datos, tests reproducibles y sin riesgos para la DB real.
+## Estrategia de mocking
 
-2. Frontend:
-- Se creó un mock de Axios con Jest (jest.mock('axios')) para simular respuestas de la API.
-- Esto evita depender del backend durante las pruebas de frontend y permite verificar que los métodos (axios.get) son llamados correctamente.
+- Backend:
+  - `ILogger<ProductController>`: mockeado con Moq para verificar que ciertos eventos (errores, duplicados, etc.) registran logs.
+  - DbContext: en general se usa `ApplicationDbContext` con EF Core InMemory para escenarios de integración ligera (CRUD y validaciones). Para casos de error controlado se usa un DbContext "throwing" para verificar propagación/gestión de excepciones.
 
-# Casos de prueba implementados
-1. Backend
-- GET /ping → responde con { message: "pong" }.
-- GET /users → devuelve un arreglo (vacío al inicio, ya que se usa SQLite in-memory).
-- POST /users → crea un usuario válido y devuelve status 201.
-- POST /users sin email → devuelve error de validación.
-- PUT /users/:id → actualiza un usuario existente.
-- PUT /users/:id con ID inexistente → responde 404.
-- DELETE /users/:id → elimina un usuario existente.
-- DELETE /users/:id con ID inexistente → responde 404.
+- Frontend:
+  - `HttpClientTestingModule`: intercepta llamadas HTTP en specs de servicios (`product.service.spec.ts`), validando verbo, URL y payload sin pegarle a la API real.
+  - `RouterTestingModule`/mocks de `ActivatedRoute`: para tests de componentes de creación/edición donde se depende de parámetros de ruta.
+  - Spies de servicios (Toast/Modal): se espían métodos para comprobar que se muestran pop-ups en éxito/error y en confirmaciones de borrado.
 
-<img width="894" height="577" alt="image-2" src="https://github.com/user-attachments/assets/df49d20e-5326-4c83-9d1f-43c579073df4" />
+## Casos de prueba relevantes
 
-2. Frontend
-- App.test.js → verifica que se renderice el título de la aplicación.
-- userService.test.js → prueba que el servicio getAllUsers devuelva usuarios mockeados y llame a axios.get('/users').
-- UserList.test.js → renderiza la lista de usuarios usando el servicio mockeado.
-- Validación de casos edge en frontend: renderizado correcto cuando el arreglo está vacío.
+- Backend:
+  - Creación/actualización con validaciones de negocio (nombre sin dígitos/repeticiones excesivas, unicidad de nombre, stock dentro de rango, etc.).
+  - Endpoints de stock: `SetStock`, `IncrementStock`, `DecrementStock` con límites y mensajes de error adecuados.
+  - Borrado de entidad inexistente -> `NotFound`.
+  - Manejo de errores y logging: uso de `ILogger` para registrar eventos esperados.
 
-<img width="403" height="311" alt="image-3" src="https://github.com/user-attachments/assets/a31a00d8-8992-4d51-98c3-e97d5aaadf2c" />
+- Frontend:
+  - Servicio HTTP: verifica métodos GET/POST/PUT/DELETE, URLs correctas, y mapeo de fechas/propiedades.
+  - Componente de alta/edición: validación de nombre (dígitos, repetidos), validación de stock (0..100), detección de duplicados y manejo de errores del API mostrando pop-ups.
+  - Componente de listado: eliminación con confirmación y manejo de error mostrando pop-up.
+  - Toast/Modal: se comprueba que las notificaciones bloqueantes se invoquen y que delegan correctamente a la capa de UI.
+
+## Evidencias de ejecución
+
+- Azure Pipelines:
+  - Publicación de resultados .NET (TRX) y Angular (JUnit) en cada run.
+
+<img width="505" height="283" alt="image" src="https://github.com/user-attachments/assets/b864c778-c934-4e63-ab87-19514219cfa1" />
+
+  - Artefacto de cobertura Angular: carpeta `angular-coverage` con el HTML.
+
+<img width="1127" height="601" alt="image" src="https://github.com/user-attachments/assets/55b154ec-bd01-4bc2-82f9-e605131e4929" />
+
+- Local:
+  - .NET: `dotnet test -v minimal` en `Backend.Tests` -> 20/20 PASS.
+<img width="1096" height="310" alt="image" src="https://github.com/user-attachments/assets/05d9b844-b861-4068-af56-d8a5153b4012" />
+
+    
+  - Angular: `npm run test:ci` en `Frontend` -> `TOTAL: 20 SUCCESS` y cobertura disponible en `Frontend/coverage/html/index.html`.
+<img width="1072" height="496" alt="image" src="https://github.com/user-attachments/assets/d6229513-5f6f-4a81-869c-ed667bf00821" />
+
+ <img width="807" height="722" alt="image" src="https://github.com/user-attachments/assets/fcb82731-307b-4868-819c-37f44c1ed04e" />
 
 
+## Notas operativas
 
-# Integración con CI/CD
-
-- Se configuró el pipeline en Azure DevOps para ejecutar npm test en frontend y backend dentro de la stage Build and Test.
-
-- Solo si los tests pasan, el pipeline continúa con Deploy QA y luego con Deploy PROD.
-
-- Esto asegura que únicamente versiones validadas lleguen a entornos finales.
-
-<img width="770" height="528" alt="image-7" src="https://github.com/user-attachments/assets/b74a09a6-892b-4f2b-a8af-a1700a527499" />
-
-
-<img width="767" height="526" alt="image-8" src="https://github.com/user-attachments/assets/bc28789c-0556-453b-918f-43d86e7e0fc8" />
+- Para evitar que los tests de Angular queden corriendo, usar `npm run test:once` o `npm run test:ci` (ambos `--watch=false`).
+- En CI, se usa ChromeHeadless y se publica JUnit + cobertura para facilitar trazabilidad.
+- Se agregó caché de `.angular/cache` en Azure DevOps para acelerar ejecuciones repetidas.
