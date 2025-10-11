@@ -62,7 +62,7 @@ dotnet test -v minimal
 Salida esperada (resumen):
 
 ```
-Passed!  - Failed:     0, Passed:    20, Skipped:     0, Total:    20
+Correctas!  - Con error:     0, Superado:    20, Omitido:     0, Total:    20
 ```
 
 ### Tests de Angular (Karma/Jasmine)
