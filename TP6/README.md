@@ -1,8 +1,4 @@
-## TP6 
-# ASP.NET Core Web API + Angular CRUD (2024)
-
-Clonado de https://github.com/zsharadze/ASPNetCoreWebApiCrudAngular y adaptado.
-
+# TP6 
 ## Prerrequisitos
 
 - .NET SDK 8.0 o superior
