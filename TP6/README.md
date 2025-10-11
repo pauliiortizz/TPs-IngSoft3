@@ -30,6 +30,9 @@ dotnet run --project Backend/ProductosApi.csproj --urls "http://localhost:7150"
 
 3) Abrir: http://localhost:7150/admin
 
+   <img width="1362" height="487" alt="image" src="https://github.com/user-attachments/assets/a4512a7f-f0e6-4504-b05d-a7666d489a9e" />
+
+
 ## Ejecutar el Frontend (Angular)
 
 1) En otra terminal:
@@ -41,6 +44,9 @@ npm start
 ```
 
 2) Abrir la app: http://localhost:4200/
+
+   <img width="1365" height="683" alt="image" src="https://github.com/user-attachments/assets/f91e8b50-42f9-471f-a4b9-cfbd7658130a" />
+
 
 ## Cómo ejecutar tests localmente
 
